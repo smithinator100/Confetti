@@ -230,9 +230,9 @@ _2026-05-29: Added `ConfettiShapeArt.swift` (12 Figma variants with SVG-path par
 
 ## ✅ Epic 7 — Reusable confetti components
 
-Goal: package the confetti effect as reusable single-file components for TypeScript and native iOS.
+Goal: package the confetti effect as reusable components for TypeScript, native iOS, and native Android.
 
-**Status:** Standalone reusable components now exist in `confetti/confetti.tsx` and `confetti/confetti.swift`, each accepting a pictogram path, exposing the tweak-panel parameter surface, and rendering a pictogram-sized overflow-visible burst container so particles can travel outside bounds.
+**Status:** Standalone reusable components now exist in `confetti/confetti.tsx`, `confetti/confetti.swift`, and `confetti/ConfettiView.kt`, each exposing the tweak-panel parameter surface and supporting a pictogram-sized overflow-visible burst container so particles can travel outside bounds.
 
 ### ✅ Story 7.1 — Reusable TypeScript component
 *As a developer, I want a single-file `confetti.tsx` component that I can drop into React projects, so that I can reuse the confetti behavior outside this prototype.*
@@ -255,6 +255,18 @@ _2026-05-29: Shipped as `confetti/confetti.tsx` with imperative `fire()` handle,
 - Provides a trigger API to fire bursts repeatedly without backlog buildup
 
 _2026-05-29: Shipped as `confetti/confetti.swift` with `ConfettiConfiguration` + `ConfettiView.fire()`, overflow-visible pictogram-sized geometry, and iOS typecheck verified via `xcrun -sdk iphonesimulator swiftc -typecheck confetti/confetti.swift -target arm64-apple-ios15.0-simulator`. Constraint: `UIImage` requires raster pictogram assets (PNG/JPEG), not SVG._
+
+### ✅ Story 7.3 — Reusable native Android component
+*As a developer, I want a reusable Android `View` confetti component, so that I can reuse the native confetti behavior in Android apps.*
+
+**Acceptance criteria**
+- `confetti/ConfettiView.kt` is self-contained and exposes `ConfettiView.fire()` with configurable burst tuning surface
+- Android rendering keeps confetti physics constants and formulas in lockstep with web/iOS (`KEYFRAME_STEPS`, `SCALE_DURATION_FRACTION`, trajectory equations, and fade-out segmentation)
+- Sample Android app exists under `android/` with a minimal launcher activity that fires the component from a button tap
+- Includes an automated JVM test covering the core physics output shape (`41` frames and zero-velocity origin hold)
+
+_2026-06-01: Shipped `confetti/ConfettiView.kt` (custom Android `View` + internal `ConfettiPhysics`), `android/` sample app scaffold with `MainActivity`, vector hero drawable, and JVM `ConfettiPhysicsTest` parity checks. Constraint: full `assembleDebug` requires local Android SDK + Gradle wrapper setup on the developer machine._
+_2026-06-01 (update): Added Android preview `Settings` modal + floating `Save` flow with full tweak controls, fixed Android particle-size rendering so `size` affects visual scale, and added Android/Web video capture comparison tooling (`tools/confetti-video-compare.sh`, `tools/compare-confetti-videos.py`, `tools/record-web-confetti.cjs`)._
 
 ---
 

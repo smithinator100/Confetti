@@ -1,11 +1,11 @@
 # Confetti Prototype
 
-A macOS prototype for comparing two confetti implementations side by side:
+A prototype for comparing confetti implementations across web, native desktop, and Android:
 
 - a web implementation running in `WKWebView`
 - a native implementation built with Core Animation layers
 
-The repo also includes reusable single-file components for React and UIKit in `confetti/`.
+The repo also includes reusable single-file components for React, UIKit, and Android View in `confetti/`.
 
 ## What Is Included
 
@@ -15,6 +15,9 @@ The repo also includes reusable single-file components for React and UIKit in `c
 - `web/index.html` - standalone static web version ready to deploy to Vercel.
 - `confetti/confetti.tsx` - reusable React component.
 - `confetti/confetti.swift` - reusable UIKit component for iOS.
+- `confetti/ConfettiView.kt` - reusable Android `View` component.
+- `android/` - Android sample app for previewing and tuning the reusable Android component.
+- `tools/confetti-video-compare.sh` - Android/Web video capture and motion comparison pipeline.
 - `BUILD.md` - story plan and implementation notes.
 - `TAXONOMY.md` - naming, file, and implementation conventions.
 
@@ -23,6 +26,8 @@ The repo also includes reusable single-file components for React and UIKit in `c
 - macOS 14+
 - Xcode
 - XcodeGen
+- Android SDK + emulator (for Android preview/testing)
+- Java 17 (for Android Gradle build)
 
 Install XcodeGen if needed:
 
@@ -66,6 +71,37 @@ Deploy from that folder with the Vercel CLI:
 vercel --cwd web
 ```
 
+## Run The Android Preview
+
+From repo root:
+
+```sh
+cd android
+./gradlew :app:installDebug
+adb shell am start -n com.confettiprototype.androidsample/.MainActivity
+```
+
+The preview includes:
+
+- a `Confetti` trigger button
+- a `Settings` button that opens a modal
+- a floating `Save` button to close the modal and return to preview
+- full tweak controls (sliders + shape/color toggles) wired to `ConfettiConfiguration`
+
+## Compare Android vs Web Automatically
+
+Run the video capture/comparison pipeline from repo root:
+
+```sh
+tools/confetti-video-compare.sh
+```
+
+Artifacts are written to `artifacts/confetti-video-compare/`:
+
+- `android-confetti.mp4`
+- `web-confetti.mp4`
+- `comparison.json` with motion/duration ratios and detected ROIs
+
 ## How The Confetti Works
 
 Both implementations use the same core model:
@@ -77,7 +113,7 @@ Both implementations use the same core model:
 - particles render in front of the pictogram, while a temporary pictogram cover creates the illusion that the burst starts from behind it
 - particle nodes/layers are removed after the animation completes
 
-Keep `confetti.html`, `ConfettiPhysics.swift`, `ConfettiShapeArt.swift`, `confetti/confetti.tsx`, and `confetti/confetti.swift` in lockstep when changing the effect.
+Keep `confetti.html`, `ConfettiPhysics.swift`, `ConfettiShapeArt.swift`, `confetti/confetti.tsx`, `confetti/confetti.swift`, and `confetti/ConfettiView.kt` in lockstep when changing the effect.
 
 ## Implement On Web Or React
 

@@ -1,0 +1,24 @@
+{
+  "name": "confetti-prototype",
+  "version": "1.0.0",
+  "description": "A macOS prototype for comparing two confetti implementations side by side:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smithinator100/confetti.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/smithinator100/confetti/issues"
+  },
+  "homepage": "https://github.com/smithinator100/confetti#readme",
+  "devDependencies": {
+    "playwright": "^1.60.0"
+  }
+}
